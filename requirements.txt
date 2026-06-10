@@ -1,0 +1,12 @@
+pandas
+numpy
+requests
+praw
+streamlit
+scikit-learn
+spacy
+plotly
+matplotlib
+pytest
+pydantic
+python-dotenv
