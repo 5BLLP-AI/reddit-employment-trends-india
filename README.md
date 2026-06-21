@@ -17,3 +17,7 @@ Analyze Indian employment trends using Reddit discussions.
 ## Project Structure
 
 (mention folders)
+
+## Environment
+
+venv\Scripts\activate.bat
