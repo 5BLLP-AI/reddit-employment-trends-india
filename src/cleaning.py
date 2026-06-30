@@ -1,19 +1,40 @@
+import pandas as pd
 import re
-from typing import Dict
 
 
-def basic_clean(text: str) -> str:
-    if not text:
+def clean_text(text):
+    if pd.isna(text):
         return ""
-    text = text.replace("\n", " ").strip()
+
+    text = text.lower()
+    text = re.sub(r"http\S+|www\S+", "", text)
+    text = re.sub(r"[^a-z0-9\s]", "", text)
     text = re.sub(r"\s+", " ", text)
-    return text
+
+    return text.strip()
 
 
-def normalize_submission(raw: Dict) -> Dict:
-    return {
-        "id": raw.get("id"),
-        "title": basic_clean(raw.get("title", "")),
-        "selftext": basic_clean(raw.get("selftext", "")),
-        "created_utc": raw.get("created_utc"),
-    }
+df = pd.read_csv("data/raw/reddit_posts.csv")
+
+print(df.head())
+
+df["clean_title"] = df["title"].apply(clean_text)
+
+print(df[["title", "clean_title"]].head(10))
+
+df.drop_duplicates(inplace=True)
+
+print(df.isnull().sum())
+
+df.dropna(subset=["title"], inplace=True)
+
+df.to_csv(
+    "data/processed/reddit_posts_cleaned.csv",
+    index=False
+)
+
+print("=" * 40)
+print("Cleaning Completed Successfully!")
+print(f"Total Records: {len(df)}")
+print("Saved to: data/processed/reddit_posts_cleaned.csv")
+print("=" * 40)

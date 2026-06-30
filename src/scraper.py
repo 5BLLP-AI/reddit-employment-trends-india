@@ -11,7 +11,7 @@ from urllib.parse import quote
 import pandas as pd
 
 import time
-
+import logging
 import random
 
 
@@ -23,6 +23,11 @@ driver = webdriver.Chrome(
 
     )
 
+)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s"
 )
 
 
@@ -118,12 +123,8 @@ for keyword in keywords:
 
             break
 
-    print(
-
-        f"{keyword}"
-
-        f" -> {len(posts)}"
-
+    logging.info(
+    f"{keyword} -> {len(posts)} posts"
     )
 
     for post in posts:
