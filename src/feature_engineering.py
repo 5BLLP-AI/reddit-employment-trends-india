@@ -156,7 +156,3 @@ print(
     df["role"].value_counts()
 )
 
-df.to_csv(
-    "data/processed/reddit_posts_cleaned.csv",
-    index=False
-)

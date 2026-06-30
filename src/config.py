@@ -1,13 +1,18 @@
-from pydantic import BaseSettings
+from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-class Settings(BaseSettings):
-    reddit_client_id: str
-    reddit_client_secret: str
-    reddit_user_agent: str = "reddit-employment-trends/0.1"
+RAW_DATA = PROJECT_ROOT / "data" / "raw" / "reddit_posts.csv"
 
-    class Config:
-        env_file = ".env"
+PROCESSED_DATA = (
+    PROJECT_ROOT
+    / "data"
+    / "processed"
+    / "reddit_posts_cleaned.csv"
+)
 
-
-settings = Settings()
+REPORT_FILE = (
+    PROJECT_ROOT
+    / "reports"
+    / "data_quality_report.txt"
+)
