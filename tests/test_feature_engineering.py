@@ -1,9 +1,7 @@
-import pandas as pd
-from src.feature_engineering import build_basic_features
+from src.feature_engineering import extract_skill, extract_role
 
+def test_skill():
+    assert extract_skill("python developer") == "Python"
 
-def test_build_basic_features():
-    df = pd.DataFrame([{"title": "a", "selftext": "t"}])
-    out = build_basic_features(df)
-    assert "title_len" in out.columns
-    assert "has_text" in out.columns
+def test_role():
+    assert extract_role("python software engineer") == "Software Engineer"

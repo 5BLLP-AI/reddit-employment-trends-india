@@ -14,27 +14,33 @@ def clean_text(text):
     return text.strip()
 
 
-df = pd.read_csv("data/raw/reddit_posts.csv")
+def main():
 
-print(df.head())
+    df = pd.read_csv("data/raw/reddit_posts.csv")
 
-df["clean_title"] = df["title"].apply(clean_text)
+    print(df.head())
 
-print(df[["title", "clean_title"]].head(10))
+    df["clean_title"] = df["title"].apply(clean_text)
 
-df.drop_duplicates(inplace=True)
+    print(df[["title", "clean_title"]].head(10))
 
-print(df.isnull().sum())
+    df.drop_duplicates(inplace=True)
 
-df.dropna(subset=["title"], inplace=True)
+    print(df.isnull().sum())
 
-df.to_csv(
-    "data/processed/reddit_posts_cleaned.csv",
-    index=False
-)
+    df.dropna(subset=["title"], inplace=True)
 
-print("=" * 40)
-print("Cleaning Completed Successfully!")
-print(f"Total Records: {len(df)}")
-print("Saved to: data/processed/reddit_posts_cleaned.csv")
-print("=" * 40)
+    df.to_csv(
+        "data/processed/reddit_posts_cleaned.csv",
+        index=False
+    )
+
+    print("=" * 40)
+    print("Cleaning Completed Successfully!")
+    print(f"Total Records: {len(df)}")
+    print("Saved to: data/processed/reddit_posts_cleaned.csv")
+    print("=" * 40)
+
+
+if __name__ == "__main__":
+    main()

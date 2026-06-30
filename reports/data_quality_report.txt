@@ -1,0 +1,19 @@
+DATA QUALITY REPORT
+========================================
+Total Records : 176
+Total Columns : 9
+
+Missing Values
+keyword        0
+title          0
+subreddit      0
+timestamp      0
+post_url       0
+clean_title    0
+location       0
+skill          0
+role           0
+dtype: int64
+
+Duplicate Rows
+0

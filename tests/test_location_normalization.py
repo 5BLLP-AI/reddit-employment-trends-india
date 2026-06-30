@@ -1,9 +1,4 @@
-from src.location_normalization import extract_location_from_text
+from src.location_normalization import extract_location
 
-
-def test_extract_location_none():
-    assert extract_location_from_text("") is None
-
-
-def test_extract_location_simple():
-    assert extract_location_from_text("Hiring in Bangalore") == "Bangalore"
+def test_location():
+    assert extract_location("software engineer bangalore") == "Bangalore"
