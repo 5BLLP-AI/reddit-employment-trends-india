@@ -1,126 +1,295 @@
 import pandas as pd
 
+# =====================================================
+# Load Cleaned Dataset
+# =====================================================
+
 df = pd.read_csv(
     "data/processed/reddit_posts_cleaned.csv"
 )
 
+# =====================================================
+# SKILL DICTIONARY
+# =====================================================
+
 SKILLS = {
 
-    "python": "Python",
+    "Python":[
+        "python","django","flask","fastapi","pandas","numpy",
+        "scikit","scikit-learn","pytorch","tensorflow",
+        "opencv","matplotlib","seaborn","streamlit"
+    ],
 
-    "java": "Java",
+    "Java":[
+        "java","spring","spring boot","hibernate","maven","gradle"
+    ],
 
-    "javascript": "JavaScript",
+    "JavaScript":[
+        "javascript","js","node","nodejs","express",
+        "react","reactjs","angular","vue","nextjs",
+        "typescript"
+    ],
 
-    "react": "React",
+    "C++":[
+        "c++","cpp","stl"
+    ],
 
-    "angular": "Angular",
+    "C":[
+        "c programming","embedded c"
+    ],
 
-    "node": "Node.js",
+    "SQL":[
+        "sql","mysql","postgres","postgresql",
+        "sqlite","oracle","sql server"
+    ],
 
-    "sql": "SQL",
+    "NoSQL":[
+        "mongodb","cassandra","redis","firebase"
+    ],
 
-    "mysql": "MySQL",
+    "Cloud":[
+        "aws","amazon web services",
+        "azure","gcp",
+        "google cloud",
+        "cloud"
+    ],
 
-    "postgresql": "PostgreSQL",
+    "Machine Learning":[
+        "machine learning",
+        "ml",
+        "xgboost",
+        "lightgbm",
+        "catboost"
+    ],
 
-    "mongodb": "MongoDB",
+    "Artificial Intelligence":[
+        "ai",
+        "artificial intelligence",
+        "llm",
+        "gpt",
+        "chatgpt",
+        "generative ai",
+        "gen ai",
+        "langchain",
+        "llamaindex",
+        "rag"
+    ],
 
-    "aws": "AWS",
+    "Data Science":[
+        "data science",
+        "data scientist",
+        "statistics",
+        "analytics"
+    ],
 
-    "azure": "Azure",
+    "Data Engineering":[
+        "airflow",
+        "spark",
+        "pyspark",
+        "hadoop",
+        "kafka",
+        "etl",
+        "data pipeline"
+    ],
 
-    "gcp": "Google Cloud",
+    "DevOps":[
+        "docker",
+        "kubernetes",
+        "jenkins",
+        "terraform",
+        "ansible",
+        "devops"
+    ],
 
-    "docker": "Docker",
+    "Git":[
+        "git",
+        "github",
+        "gitlab",
+        "bitbucket"
+    ],
 
-    "kubernetes": "Kubernetes",
+    "Linux":[
+        "linux",
+        "ubuntu",
+        "unix",
+        "bash",
+        "shell"
+    ],
 
-    "git": "Git",
-
-    "linux": "Linux",
-
-    "tensorflow": "TensorFlow",
-
-    "pytorch": "PyTorch",
-
-    "machine learning": "Machine Learning",
-
-    "deep learning": "Deep Learning",
-
-    "ai": "Artificial Intelligence",
-
-    "excel": "Excel",
-
-    "power bi": "Power BI",
-
-    "tableau": "Tableau"
+    "Networking":[
+        "tcp",
+        "udp",
+        "http",
+        "dns",
+        "networking"
+    ]
 }
+
+# =====================================================
+# ROLE DICTIONARY
+# =====================================================
 
 ROLES = {
 
-    "software engineer": "Software Engineer",
+    "Software Engineer":[
+        "software engineer",
+        "software developer",
+        "developer",
+        "programmer",
+        "sde"
+    ],
 
-    "software developer": "Software Developer",
+    "Backend Developer":[
+        "backend",
+        "backend developer",
+        "backend engineer"
+    ],
 
-    "backend": "Backend Developer",
+    "Frontend Developer":[
+        "frontend",
+        "frontend developer",
+        "frontend engineer",
+        "ui developer"
+    ],
 
-    "frontend": "Frontend Developer",
+    "Full Stack Developer":[
+        "full stack",
+        "fullstack",
+        "full stack developer"
+    ],
 
-    "full stack": "Full Stack Developer",
+    "Web Developer":[
+        "web developer",
+        "website developer"
+    ],
 
-    "data analyst": "Data Analyst",
+    "Mobile Developer":[
+        "android developer",
+        "ios developer",
+        "flutter developer",
+        "react native"
+    ],
 
-    "data scientist": "Data Scientist",
+    "Data Scientist":[
+        "data scientist"
+    ],
 
-    "ml engineer": "Machine Learning Engineer",
+    "Data Analyst":[
+        "data analyst",
+        "business analyst"
+    ],
 
-    "machine learning engineer": "Machine Learning Engineer",
+    "Machine Learning Engineer":[
+        "machine learning engineer",
+        "ml engineer"
+    ],
 
-    "ai engineer": "AI Engineer",
+    "AI Engineer":[
+        "ai engineer",
+        "llm engineer",
+        "gen ai engineer"
+    ],
 
-    "devops": "DevOps Engineer",
+    "Data Engineer":[
+        "data engineer",
+        "etl developer"
+    ],
 
-    "qa": "QA Engineer",
+    "DevOps Engineer":[
+        "devops engineer",
+        "site reliability engineer",
+        "sre"
+    ],
 
-    "tester": "QA Engineer",
+    "Cloud Engineer":[
+        "cloud engineer"
+    ],
 
-    "intern": "Intern",
+    "QA Engineer":[
+        "qa",
+        "quality assurance",
+        "test engineer"
+    ],
 
-    "internship": "Intern",
+    "Security Engineer":[
+        "cyber security",
+        "security engineer",
+        "penetration tester"
+    ],
 
-    "sde": "Software Development Engineer"
+    "Intern":[
+        "intern",
+        "internship",
+        "summer intern"
+    ],
+
+    "Fresher":[
+        "fresher",
+        "entry level",
+        "graduate engineer trainee",
+        "get"
+    ]
 }
+
+# =====================================================
+# SKILL EXTRACTION
+# =====================================================
 
 def extract_skill(text):
 
-    text = str(text).lower()
+    if pd.isna(text):
+        return "Unknown"
+
+    text = text.lower()
 
     found = []
 
-    for keyword, skill in SKILLS.items():
+    for skill, words in SKILLS.items():
 
-        if keyword in text:
+        for word in words:
 
-            found.append(skill)
+            if word in text:
 
-    if len(found) == 0:
+                found.append(skill)
+                break
 
-        return "Unknown"
+    if found:
 
-    return ", ".join(found)
+        return ", ".join(sorted(set(found)))
+
+    return "Unknown"
+
+# =====================================================
+# ROLE EXTRACTION
+# =====================================================
 
 def extract_role(text):
 
-    text = str(text).lower()
+    if pd.isna(text):
+        return "Unknown"
 
-    for keyword, role in ROLES.items():
+    text = text.lower()
 
-        if keyword in text:
+    found = []
 
-            return role
+    for role, words in ROLES.items():
+
+        for word in words:
+
+            if word in text:
+
+                found.append(role)
+                break
+
+    if found:
+
+        return ", ".join(sorted(set(found)))
 
     return "Unknown"
+
+# =====================================================
+# APPLY FEATURE ENGINEERING
+# =====================================================
 
 df["skill"] = df["clean_title"].apply(
     extract_skill
@@ -129,6 +298,34 @@ df["skill"] = df["clean_title"].apply(
 df["role"] = df["clean_title"].apply(
     extract_role
 )
+
+combined_text = (
+    df["keyword"].fillna("") +
+    " " +
+    df["clean_title"].fillna("")
+)
+
+df["skill"] = combined_text.apply(extract_skill)
+df["role"] = combined_text.apply(extract_role)
+
+# =====================================================
+# SAVE DATASET
+# =====================================================
+
+df.to_csv(
+    "data/processed/reddit_posts_cleaned.csv",
+    index=False
+)
+
+# =====================================================
+# SUMMARY
+# =====================================================
+
+print("="*60)
+print("FEATURE ENGINEERING COMPLETED")
+print("="*60)
+
+print("\nSample Output\n")
 
 print(
     df[
@@ -140,19 +337,10 @@ print(
     ].head(20)
 )
 
-print(
-    "\nTop Skills:\n"
-)
+print("\nTop Skills\n")
+print(df["skill"].value_counts().head(20))
 
-print(
-    df["skill"].value_counts().head(10)
-)
+print("\nTop Roles\n")
+print(df["role"].value_counts().head(20))
 
-print(
-    "\nTop Roles:\n"
-)
-
-print(
-    df["role"].value_counts()
-)
-
+print("\nDataset Saved Successfully")
