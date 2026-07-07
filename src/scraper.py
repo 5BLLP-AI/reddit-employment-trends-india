@@ -29,7 +29,7 @@ logging.basicConfig(
 
 BATCH_SIZE = 20
 
-batch_number = 5       # Change this to 2,3,4... for next batches
+batch_number = 1       # Change this to 2,3,4... for next batches
 
 
 start = (batch_number - 1) * BATCH_SIZE
