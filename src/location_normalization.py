@@ -1,266 +1,84 @@
 import pandas as pd
 
-# ===========================================================
-# LOCATION DICTIONARY
-# ===========================================================
+df = pd.read_csv("data/processed/reddit_posts_featured.csv")
 
-LOCATION_KEYWORDS = {
+LOCATIONS = {
 
-    "Bangalore": [
+    "Bangalore":[
         "bangalore",
         "bengaluru"
     ],
 
-    "Hyderabad": [
+    "Hyderabad":[
         "hyderabad"
     ],
 
-    "Pune": [
+    "Pune":[
         "pune"
     ],
 
-    "Mumbai": [
-        "mumbai",
-        "bombay",
-        "navi mumbai"
+    "Mumbai":[
+        "mumbai"
     ],
 
-    "Delhi": [
+    "Delhi":[
         "delhi",
         "new delhi"
     ],
 
-    "Noida": [
-        "noida",
-        "greater noida"
+    "Noida":[
+        "noida"
     ],
 
-    "Gurgaon": [
+    "Gurgaon":[
         "gurgaon",
         "gurugram"
     ],
 
-    "Chennai": [
-        "chennai",
-        "madras"
+    "Chennai":[
+        "chennai"
     ],
 
-    "Kolkata": [
-        "kolkata",
-        "calcutta"
+    "Kolkata":[
+        "kolkata"
     ],
 
-    "Ahmedabad": [
+    "Ahmedabad":[
         "ahmedabad"
     ],
 
-    "Jaipur": [
-        "jaipur"
-    ],
-
-    "Lucknow": [
-        "lucknow"
-    ],
-
-    "Kanpur": [
-        "kanpur"
-    ],
-
-    "Indore": [
-        "indore"
-    ],
-
-    "Bhopal": [
-        "bhopal"
-    ],
-
-    "Nagpur": [
-        "nagpur"
-    ],
-
-    "Surat": [
-        "surat"
-    ],
-
-    "Vadodara": [
-        "vadodara",
-        "baroda"
-    ],
-
-    "Rajkot": [
-        "rajkot"
-    ],
-
-    "Nashik": [
-        "nashik",
-        "nasik"
-    ],
-
-    "Aurangabad": [
-        "aurangabad"
-    ],
-
-    "Goa": [
-        "goa"
-    ],
-
-    "Kochi": [
-        "kochi",
-        "cochin"
-    ],
-
-    "Thiruvananthapuram": [
-        "thiruvananthapuram",
-        "trivandrum"
-    ],
-
-    "Kozhikode": [
-        "kozhikode",
-        "calicut"
-    ],
-
-    "Mysore": [
-        "mysore",
-        "mysuru"
-    ],
-
-    "Mangalore": [
-        "mangalore",
-        "mangaluru"
-    ],
-
-    "Visakhapatnam": [
-        "visakhapatnam",
-        "vizag"
-    ],
-
-    "Vijayawada": [
-        "vijayawada"
-    ],
-
-    "Coimbatore": [
-        "coimbatore"
-    ],
-
-    "Madurai": [
-        "madurai"
-    ],
-
-    "Patna": [
-        "patna"
-    ],
-
-    "Ranchi": [
-        "ranchi"
-    ],
-
-    "Bhubaneswar": [
-        "bhubaneswar"
-    ],
-
-    "Chandigarh": [
-        "chandigarh"
-    ],
-
-    "Mohali": [
-        "mohali"
-    ],
-
-    "Dehradun": [
-        "dehradun"
-    ],
-
-    "Jammu": [
-        "jammu"
-    ],
-
-    "Srinagar": [
-        "srinagar"
-    ],
-
-    "Remote": [
+    "Remote":[
         "remote",
         "work from home",
-        "wfh",
-        "anywhere",
-        "remote-first",
-        "fully remote"
-    ],
-
-    "Hybrid": [
-        "hybrid"
+        "wfh"
     ]
 }
 
-# ===========================================================
-# LOCATION EXTRACTION FUNCTION
-# ===========================================================
-
 def extract_location(text):
 
-    if pd.isna(text):
-        return "Unknown"
-
-    text = text.lower()
+    text = str(text).lower()
 
     found = []
 
-    for location, keywords in LOCATION_KEYWORDS.items():
+    for city, words in LOCATIONS.items():
 
-        for keyword in keywords:
+        for word in words:
 
-            if keyword in text:
-
-                found.append(location)
+            if word in text:
+                found.append(city)
                 break
 
-    if found:
+    if len(found)==0:
+        return "Unknown"
 
-        return ", ".join(sorted(set(found)))
+    return ", ".join(sorted(found))
 
-    return "Unknown"
+df["location"] = df["clean_title"].apply(extract_location)
 
-# ===========================================================
-# APPLY LOCATION EXTRACTION
-# ===========================================================
+df.to_csv(
+    "data/processed/reddit_posts_final.csv",
+    index=False
+)
 
-def normalize_locations(df):
-
-    # Use keyword + title for better matching
-    combined_text = (
-        df["keyword"].fillna("") +
-        " " +
-        df["clean_title"].fillna("")
-    )
-
-    df["location"] = combined_text.apply(extract_location)
-
-    return df
-
-
-# ===========================================================
-# MAIN
-# ===========================================================
-
-if __name__ == "__main__":
-
-    df = pd.read_csv(
-        "data/processed/reddit_posts_cleaned.csv"
-    )
-
-    df = normalize_locations(df)
-
-    df.to_csv(
-        "data/processed/reddit_posts_cleaned.csv",
-        index=False
-    )
-
-    print("=" * 60)
-    print("LOCATION NORMALIZATION COMPLETED")
-    print("=" * 60)
-
-    print("\nTop Locations\n")
-
-    print(df["location"].value_counts().head(20))
-
-    print("\nDataset Saved Successfully")
+print("Location Normalization Complete")
+print(df[["clean_title","skill","role","location"]].head())
