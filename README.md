@@ -96,7 +96,7 @@ streamlit run dashboard/app.py
 
 1. Push this repository to GitHub.
 2. In Streamlit Community Cloud, create a new app from the repository.
-3. Set the main file path to `dashboard/app.py`.
+3. Set the main file path to `streamlit_app.py`.
 4. Make sure `data/processed/reddit_posts_final.csv` is committed or generated during your build pipeline.
 
 ### Render
@@ -106,7 +106,7 @@ This repository includes:
 - `render.yaml` for service definition.
 - `build.sh` for environment setup.
 
-Use `dashboard/app.py` as the Streamlit entry point and expose the port provided by Render.
+Use `streamlit_app.py` as the Streamlit entry point and expose the port provided by Render.
 
 ## Validation
 
@@ -116,6 +116,7 @@ Recommended checks before publishing:
 python -m compileall dashboard
 pytest
 streamlit run dashboard/app.py
+streamlit run streamlit_app.py
 ```
 
 The dashboard loader validates that the dataset exists and contains the required columns before rendering.
