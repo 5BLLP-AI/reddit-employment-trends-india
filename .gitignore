@@ -6,9 +6,11 @@ env/
 *.pyo
 *.pyd
 .mypy_cache/
-/.pytest_cache/
+.pytest_cache/
 /.ipynb_checkpoints/
-data/raw/
 data/interim/
-data/processed/
 .env
+!data/raw/
+!data/raw/*.csv
+!data/processed/
+!data/processed/*.csv

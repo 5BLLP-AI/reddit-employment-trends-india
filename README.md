@@ -97,7 +97,8 @@ streamlit run dashboard/app.py
 1. Push this repository to GitHub.
 2. In Streamlit Community Cloud, create a new app from the repository.
 3. Set the main file path to `streamlit_app.py`.
-4. On first launch the app regenerates `data/processed/reddit_posts_final.csv` from the tracked raw CSV files if it is missing.
+4. Commit the CSV files in `data/raw/` and `data/processed/` so Streamlit Cloud receives the dataset needed to rebuild and load the dashboard.
+5. On first launch the app regenerates `data/processed/reddit_posts_final.csv` from the tracked raw CSV files if it is missing.
 
 ### Render
 
