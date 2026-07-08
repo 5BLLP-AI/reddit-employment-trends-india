@@ -97,7 +97,7 @@ streamlit run dashboard/app.py
 1. Push this repository to GitHub.
 2. In Streamlit Community Cloud, create a new app from the repository.
 3. Set the main file path to `streamlit_app.py`.
-4. Make sure `data/processed/reddit_posts_final.csv` is committed or generated during your build pipeline.
+4. On first launch the app regenerates `data/processed/reddit_posts_final.csv` from the tracked raw CSV files if it is missing.
 
 ### Render
 
@@ -105,6 +105,7 @@ This repository includes:
 
 - `render.yaml` for service definition.
 - `build.sh` for environment setup.
+- The build script also regenerates the processed dataset from `data/raw/` during deployment.
 
 Use `streamlit_app.py` as the Streamlit entry point and expose the port provided by Render.
 

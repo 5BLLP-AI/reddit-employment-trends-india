@@ -3,6 +3,8 @@ from __future__ import annotations
 import ast
 import math
 import re
+import subprocess
+import sys
 from pathlib import Path
 from typing import Iterable, Sequence
 
@@ -288,12 +290,30 @@ def _skill_category(skill: object) -> str:
     return "Other"
 
 
+def _generate_missing_processed_dataset() -> None:
+    pipeline_scripts = [
+        BASE_DIR / "src" / "cleaning.py",
+        BASE_DIR / "src" / "feature_engineering.py",
+        BASE_DIR / "src" / "location_normalization.py",
+    ]
+
+    if DEFAULT_DATA_PATH.exists():
+        return
+
+    if not (BASE_DIR / "data" / "raw" / "reddit_posts.csv").exists():
+        raise FileNotFoundError(
+            f"Missing dataset: {DEFAULT_DATA_PATH}. The raw source file is also missing, so the processed dataset cannot be rebuilt automatically."
+        )
+
+    for script_path in pipeline_scripts:
+        if not script_path.exists():
+            raise FileNotFoundError(f"Missing preprocessing script: {script_path}")
+        subprocess.run([sys.executable, str(script_path)], cwd=BASE_DIR, check=True)
+
+
 @st.cache_data(show_spinner=False)
 def load_dashboard_data() -> pd.DataFrame:
-    if not DEFAULT_DATA_PATH.exists():
-        raise FileNotFoundError(
-            f"Missing dataset: {DEFAULT_DATA_PATH}. Rebuild the processed CSV before launching the dashboard."
-        )
+    _generate_missing_processed_dataset()
 
     df = _normalize_columns(pd.read_csv(DEFAULT_DATA_PATH))
     missing_columns = sorted(REQUIRED_COLUMNS - set(df.columns))
