@@ -412,10 +412,16 @@ def inject_dashboard_styles() -> None:
             max-width: 1600px;
         }
         header[data-testid="stHeader"] {
+            background: transparent;
+            border: none;
+            height: 3.5rem;
+        }
+        header[data-testid="stHeader"]::before,
+        header[data-testid="stHeader"]::after {
             display: none;
         }
         div[data-testid="stToolbar"] {
-            display: none;
+            background: transparent;
         }
         section[data-testid="stSidebar"] { background: linear-gradient(180deg, rgba(17, 26, 46, 0.98), rgba(11, 18, 32, 0.98)); border-right: 1px solid var(--border); }
         .dashboard-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1.08; margin: 0.35rem 0 0.35rem 0; padding-top: 0.25rem; }
